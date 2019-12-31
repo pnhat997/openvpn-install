@@ -378,6 +378,8 @@ group $group_name
 persist-key
 persist-tun
 duplicate-cn
+server-bridge 10.8.0.4 255.255.255.0 10.8.0.50 10.8.0.100
+server-bridge
 status openvpn-status.log
 verb 3
 crl-verify crl.pem" >> /etc/openvpn/server/server.conf
