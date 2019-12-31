@@ -372,12 +372,12 @@ ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server.conf
 		echo 'push "dhcp-option DNS 64.6.65.6"' >> /etc/openvpn/server/server.conf
 		;;
 	esac
-	echo "keepalive 10 120
+echo "keepalive 10 120
 cipher AES-256-CBC
 user nobody
 group $group_name
 persist-key
-persist-tun
+persist-tap
 duplicate-cn
 status openvpn-status.log
 verb 3
@@ -438,13 +438,13 @@ WantedBy=multi-user.target" > /etc/systemd/system/openvpn-iptables.service
 	fi
 	# client-common.txt is created so we have a template to add further users later
 	echo "client
-dev tun
+dev tap
 proto $protocol
 remote $ip $port
 resolv-retry infinite
 nobind
 persist-key
-persist-tun
+persist-tap
 remote-cert-tls server
 auth SHA512
 cipher AES-256-CBC
