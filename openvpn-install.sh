@@ -328,8 +328,7 @@ ssbzSibBsu/6iGtCOGEoXJf//////////wIBAg==
 	echo "local $ip
 port $port
 proto $protocol
-dev tap
-dev-node tap-bridge
+dev tun
 ca ca.crt
 cert server.crt
 key server.key
@@ -337,7 +336,8 @@ dh dh.pem
 auth SHA512
 tls-crypt tc.key
 topology subnet
-server-bridge 10.8.0.4 255.255.255.0 10.8.0.50 10.8.0.100
+server 10.8.0.0 255.255.255.0
+duplicate-cn
 ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server.conf
 	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server/server.conf
 	# DNS
@@ -372,13 +372,12 @@ ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server.conf
 		echo 'push "dhcp-option DNS 64.6.65.6"' >> /etc/openvpn/server/server.conf
 		;;
 	esac
-echo "keepalive 10 120
+	echo "keepalive 10 120
 cipher AES-256-CBC
 user nobody
 group $group_name
 persist-key
-persist-tap
-duplicate-cn
+persist-tun
 status openvpn-status.log
 verb 3
 crl-verify crl.pem" >> /etc/openvpn/server/server.conf
@@ -438,13 +437,13 @@ WantedBy=multi-user.target" > /etc/systemd/system/openvpn-iptables.service
 	fi
 	# client-common.txt is created so we have a template to add further users later
 	echo "client
-dev tap
+dev tun
 proto $protocol
 remote $ip $port
 resolv-retry infinite
 nobind
 persist-key
-persist-tap
+persist-tun
 remote-cert-tls server
 auth SHA512
 cipher AES-256-CBC
