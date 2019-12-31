@@ -328,7 +328,8 @@ ssbzSibBsu/6iGtCOGEoXJf//////////wIBAg==
 	echo "local $ip
 port $port
 proto $protocol
-dev tun
+dev tap
+dev-node tap-bridge
 ca ca.crt
 cert server.crt
 key server.key
@@ -336,7 +337,7 @@ dh dh.pem
 auth SHA512
 tls-crypt tc.key
 topology subnet
-server 10.8.0.0 255.255.255.0
+server-bridge 10.8.0.4 255.255.255.0 10.8.0.50 10.8.0.100
 ifconfig-pool-persist ipp.txt" > /etc/openvpn/server/server.conf
 	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server/server.conf
 	# DNS
@@ -378,8 +379,6 @@ group $group_name
 persist-key
 persist-tun
 duplicate-cn
-server-bridge 10.8.0.4 255.255.255.0 10.8.0.50 10.8.0.100
-server-bridge
 status openvpn-status.log
 verb 3
 crl-verify crl.pem" >> /etc/openvpn/server/server.conf
